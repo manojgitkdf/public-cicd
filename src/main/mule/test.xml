@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0c344d77-e2a6-42eb-81f6-7b4e14afb985" >
+		<http:listener-connection host="0.0.0.0" port="8085" />
+	</http:listener-config>
+	<flow name="testFlow" doc:id="fb5309b1-3689-4c6b-8bf7-298a4b184bba" >
+		<http:listener doc:name="Listener" doc:id="b02acacb-3da2-4bff-8c6a-80e6d9336155" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Before transforming" doc:id="f84d77e4-c5c9-4ac4-9e77-5348740c9958" message="Before transforming"/>
+		<ee:transform doc:name="Transform Message" doc:id="e10484b8-232e-43d0-9523-0555e823314a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"status": "All Ok"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="After transforming" doc:id="3529f6fa-fa66-47fb-a27d-b05e0559d87e" message="After transforming"/>
+	</flow>
+</mule>
